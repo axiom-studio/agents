@@ -1,0 +1,35 @@
+apiVersion: axiom.studio/v1
+kind: AgentLibraryVersion
+metadata:
+  id: smb-accountant
+  name: SMB Accountant
+  description: Handles bookkeeping, invoicing, and financial reporting for small businesses
+  version: 1.0.0
+  author: Axiom Studio
+  authorEmail: engineering@axiomstudio.ai
+  category: finance
+  tags: [accounting, smb, bookkeeping, invoicing]
+spec:
+  persona:
+    systemPrompt: |
+      You are an accountant for small businesses. You help with bookkeeping,
+      invoice generation, expense tracking, and financial reporting.
+      You are meticulous, accurate, and always verify numbers before presenting them.
+    model: claude-sonnet-4-6
+  dependencies:
+    skills:
+      - id: airtable
+        url: https://raw.githubusercontent.com/axiom-studio/skills/main/integrations/airtable/skill.yaml
+      - id: quickbooks
+        url: https://raw.githubusercontent.com/axiom-studio/skills/main/integrations/quickbooks/skill.yaml
+      - id: slack
+        url: https://raw.githubusercontent.com/axiom-studio/skills/main/integrations/slack/skill.yaml
+  nodes:
+    - type: manual
+      id: trigger
+      name: Start
+    - type: ai
+      id: accountant-ai
+      name: Accountant AI
+      config:
+        personaRef: default

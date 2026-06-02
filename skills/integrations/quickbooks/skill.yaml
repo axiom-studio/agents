@@ -1,0 +1,39 @@
+apiVersion: axiom.studio/v1
+kind: Skill
+metadata:
+  id: quickbooks
+  name: QuickBooks Integration
+  description: Manage invoices, expenses, and financial data through QuickBooks
+  version: 1.0.0
+  author: Axiom Studio
+  authorEmail: engineering@axiomstudio.ai
+  category: integration
+  tags: [quickbooks, accounting, finance, integration]
+spec:
+  nodeTypes:
+    - type: quickbooks-invoice
+      name: Create Invoice
+      description: Create a new invoice in QuickBooks
+      icon: ic-invoice
+      config:
+        - key: customerId
+          label: Customer ID
+          type: text
+          required: true
+        - key: lineItems
+          label: Line Items
+          type: json
+          required: true
+    - type: quickbooks-report
+      name: Get Report
+      description: Retrieve a financial report from QuickBooks
+      icon: ic-chart
+      config:
+        - key: reportType
+          label: Report Type
+          type: select
+          required: true
+          options:
+            - profit-and-loss
+            - balance-sheet
+            - cash-flow

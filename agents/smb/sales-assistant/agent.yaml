@@ -1,0 +1,33 @@
+apiVersion: axiom.studio/v1
+kind: AgentLibraryVersion
+metadata:
+  id: smb-sales-assistant
+  name: SMB Sales Assistant
+  description: Manages leads, pipelines, and customer outreach for small business sales teams
+  version: 1.0.0
+  author: Axiom Studio
+  authorEmail: engineering@axiomstudio.ai
+  category: sales
+  tags: [sales, crm, leads, outreach, smb]
+spec:
+  persona:
+    systemPrompt: |
+      You are a sales assistant for small businesses. You help manage leads,
+      track pipeline stages, draft outreach emails, and schedule follow-ups.
+      You are persuasive, organized, and always keep the customer's needs in mind.
+    model: claude-sonnet-4-6
+  dependencies:
+    skills:
+      - id: airtable
+        url: https://raw.githubusercontent.com/axiom-studio/skills/main/integrations/airtable/skill.yaml
+      - id: slack
+        url: https://raw.githubusercontent.com/axiom-studio/skills/main/integrations/slack/skill.yaml
+  nodes:
+    - type: manual
+      id: trigger
+      name: Start
+    - type: ai
+      id: sales-ai
+      name: Sales AI
+      config:
+        personaRef: default

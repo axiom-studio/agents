@@ -1,0 +1,39 @@
+name: Validate Manifests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate YAML syntax
+        run: |
+          find . -name "*.yaml" -o -name "*.yml" | while read f; do
+            python3 -c "import yaml; yaml.safe_load(open('$f'))" || exit 1
+          done
+      - name: Check required fields
+        run: |
+          python3 << 'EOF'
+          import yaml, glob, sys
+          errors = []
+          for path in glob.glob("**/*.yaml", recursive=True):
+              with open(path) as f:
+                  doc = yaml.safe_load(f)
+              if not doc or "apiVersion" not in doc or "kind" not in doc:
+                  errors.append(f"{path}: missing apiVersion or kind")
+                  continue
+              kind = doc["kind"]
+              meta = doc.get("metadata", {})
+              if "name" not in meta or "id" not in meta or "version" not in meta:
+                  errors.append(f"{path}: metadata must include name, id, version")
+          if errors:
+              for e in errors:
+                  print(e)
+              sys.exit(1)
+          print("All manifests valid.")
+          EOF
