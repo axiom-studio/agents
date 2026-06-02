@@ -19,11 +19,11 @@ spec:
   dependencies:
     skills:
       - id: airtable
-        url: https://raw.githubusercontent.com/axiom-studio/skills/main/integrations/airtable/skill.yaml
+        url: https://raw.githubusercontent.com/axiom-studio/agents/main/skills/integrations/airtable/skill.yaml
       - id: quickbooks
-        url: https://raw.githubusercontent.com/axiom-studio/skills/main/integrations/quickbooks/skill.yaml
+        url: https://raw.githubusercontent.com/axiom-studio/agents/main/skills/integrations/quickbooks/skill.yaml
       - id: slack
-        url: https://raw.githubusercontent.com/axiom-studio/skills/main/integrations/slack/skill.yaml
+        url: https://raw.githubusercontent.com/axiom-studio/agents/main/skills/integrations/slack/skill.yaml
   nodes:
     - type: manual
       id: trigger
