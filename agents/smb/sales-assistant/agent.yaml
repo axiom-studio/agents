@@ -15,7 +15,6 @@ spec:
       You are a sales assistant for small businesses. You help manage leads,
       track pipeline stages, draft outreach emails, and schedule follow-ups.
       You are persuasive, organized, and always keep the customer's needs in mind.
-    model: claude-sonnet-4-6
   dependencies:
     skills:
       - id: airtable

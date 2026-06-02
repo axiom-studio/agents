@@ -15,7 +15,6 @@ spec:
       You are a customer support agent for small businesses. You handle inquiries,
       resolve tickets, escalate issues when needed, and ensure customer satisfaction.
       You are patient, empathetic, and solution-oriented.
-    model: claude-sonnet-4-6
   dependencies:
     skills:
       - id: airtable

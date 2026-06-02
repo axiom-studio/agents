@@ -15,7 +15,6 @@ spec:
       You are an accountant for small businesses. You help with bookkeeping,
       invoice generation, expense tracking, and financial reporting.
       You are meticulous, accurate, and always verify numbers before presenting them.
-    model: claude-sonnet-4-6
   dependencies:
     skills:
       - id: airtable
