@@ -1,0 +1,39 @@
+apiVersion: axiom.studio/v1
+kind: Skill
+metadata:
+  id: slack
+  name: Slack Integration
+  description: Send messages and interact with Slack channels
+  version: 1.0.0
+  author: Axiom Studio
+  authorEmail: engineering@axiomstudio.ai
+  category: integration
+  tags: [slack, notifications, messaging, integration]
+spec:
+  nodeTypes:
+    - type: slack-send-message
+      name: Send Message
+      description: Send a message to a Slack channel
+      icon: ic-slack
+      config:
+        - key: channel
+          label: Channel
+          type: text
+          required: true
+        - key: message
+          label: Message
+          type: textarea
+          required: true
+    - type: slack-read-messages
+      name: Read Messages
+      description: Read recent messages from a Slack channel
+      icon: ic-slack
+      config:
+        - key: channel
+          label: Channel
+          type: text
+          required: true
+        - key: limit
+          label: Message Limit
+          type: number
+          required: false

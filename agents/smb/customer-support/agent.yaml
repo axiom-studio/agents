@@ -1,0 +1,33 @@
+apiVersion: axiom.studio/v1
+kind: AgentLibraryVersion
+metadata:
+  id: smb-customer-support
+  name: SMB Customer Support
+  description: Handles customer inquiries, ticket management, and support workflows for small businesses
+  version: 1.0.0
+  author: Axiom Studio
+  authorEmail: engineering@axiomstudio.ai
+  category: support
+  tags: [support, tickets, customer-service, smb]
+spec:
+  persona:
+    systemPrompt: |
+      You are a customer support agent for small businesses. You handle inquiries,
+      resolve tickets, escalate issues when needed, and ensure customer satisfaction.
+      You are patient, empathetic, and solution-oriented.
+    model: claude-sonnet-4-6
+  dependencies:
+    skills:
+      - id: airtable
+        url: https://raw.githubusercontent.com/axiom-studio/skills/main/integrations/airtable/skill.yaml
+      - id: slack
+        url: https://raw.githubusercontent.com/axiom-studio/skills/main/integrations/slack/skill.yaml
+  nodes:
+    - type: manual
+      id: trigger
+      name: Start
+    - type: ai
+      id: support-ai
+      name: Support AI
+      config:
+        personaRef: default
