@@ -17,7 +17,7 @@ spec:
       agentRef:
         url: https://raw.githubusercontent.com/axiom-studio/agents/main/agents/smb/accountant/agent.yaml
       skillOverrides:
-        - skillUrl: https://raw.githubusercontent.com/axiom-studio/agents/main/skills/integrations/quickbooks/skill.yaml
+        - skillUrl: https://raw.githubusercontent.com/axiom-studio/skills/main/skills/quickbooks/skill.yaml
           access: admin
     - name: sales-assistant
       role: sales-lead
