@@ -15,18 +15,18 @@ spec:
     - name: accountant
       role: finance-lead
       agentRef:
-        url: https://raw.githubusercontent.com/axiomstudio/agents/main/agents/smb/accountant/agent.yaml
+        url: https://raw.githubusercontent.com/axiom-studio/agents/main/agents/smb/accountant/agent.yaml
       skillOverrides:
-        - skillUrl: https://raw.githubusercontent.com/axiom-studio/skills/main/integrations/quickbooks/skill.yaml
+        - skillUrl: https://raw.githubusercontent.com/axiom-studio/agents/main/skills/integrations/quickbooks/skill.yaml
           access: admin
     - name: sales-assistant
       role: sales-lead
       agentRef:
-        url: https://raw.githubusercontent.com/axiomstudio/agents/main/agents/smb/sales-assistant/agent.yaml
+        url: https://raw.githubusercontent.com/axiom-studio/agents/main/agents/smb/sales-assistant/agent.yaml
     - name: support
       role: support-lead
       agentRef:
-        url: https://raw.githubusercontent.com/axiomstudio/agents/main/agents/smb/customer-support/agent.yaml
+        url: https://raw.githubusercontent.com/axiom-studio/agents/main/agents/smb/customer-support/agent.yaml
   context:
     businessType: "small-business"
     escalationPolicy: "escalate-to-human-after-3-attempts"
