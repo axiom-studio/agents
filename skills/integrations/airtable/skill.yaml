@@ -11,33 +11,10 @@ metadata:
   tags: [airtable, database, cms, integration]
 spec:
   nodeTypes:
-    - type: airtable-read
-      name: Read Airtable Records
-      description: Fetch records from an Airtable table
-      icon: ic-database
-      config:
-        - key: baseId
-          label: Base ID
-          type: text
-          required: true
-        - key: tableId
-          label: Table ID / Name
-          type: text
-          required: true
-        - key: filterFormula
-          label: Filter Formula
-          type: text
-          required: false
-    - type: airtable-write
-      name: Write Airtable Record
-      description: Create or update a record in Airtable
-      icon: ic-database
-      config:
-        - key: baseId
-          label: Base ID
-          type: text
-          required: true
-        - key: tableId
-          label: Table ID / Name
-          type: text
-          required: true
+    - airtable-read
+    - airtable-write
+    - airtable-create
+    - airtable-delete
+  permissions:
+    - airtable:read
+    - airtable:write

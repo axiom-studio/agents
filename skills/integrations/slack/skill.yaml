@@ -11,29 +11,9 @@ metadata:
   tags: [slack, notifications, messaging, integration]
 spec:
   nodeTypes:
-    - type: slack-send-message
-      name: Send Message
-      description: Send a message to a Slack channel
-      icon: ic-slack
-      config:
-        - key: channel
-          label: Channel
-          type: text
-          required: true
-        - key: message
-          label: Message
-          type: textarea
-          required: true
-    - type: slack-read-messages
-      name: Read Messages
-      description: Read recent messages from a Slack channel
-      icon: ic-slack
-      config:
-        - key: channel
-          label: Channel
-          type: text
-          required: true
-        - key: limit
-          label: Message Limit
-          type: number
-          required: false
+    - slack-send-message
+    - slack-read-messages
+    - slack-channel-list
+  permissions:
+    - slack:read
+    - slack:write
