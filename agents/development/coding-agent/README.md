@@ -22,8 +22,9 @@ binding is absent:
 - Arbitrary commands are credentialless, network-denied, duration-bounded, and
   restricted to `bun`, `bunx`, `git`, and `rg`.
 - Authenticated Git clone and push are fixed native operations. They receive a
-  short-lived `github_token` grant only for `github.com`; push is an explicit
-  policy bit separate from clone.
+  short-lived `github_token` grant only for the explicitly listed
+  `axiom-studio` repositories on `github.com`; push is an explicit policy bit
+  separate from clone.
 - Kubernetes reads and mutations use the target environment's
   `openseal.kubernetes` runtime capability. Workspace or Git authority does not
   imply cluster authority.
