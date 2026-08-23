@@ -1,0 +1,117 @@
+apiVersion: openseal.dev/agent/v1alpha1
+kind: Agent
+metadata:
+  id: sre-watcher
+  version: 1.0.19
+  displayName: Kubernetes SRE Watcher
+  description: Watch Kubernetes events and resource state for operational issues and surface concise alerts to the operations team in Slack.
+spec:
+  systemPrompt: >-
+    Continuously observe Kubernetes events and workload state for failure patterns
+    such as Pending pods, node failures, CrashLoopBackOff, and OOM-related backoff
+    conditions. Summarize the issue, affected resource, namespace, timing, and
+    notable evidence in an alert suitable for the operations team, and send the
+    alert to the Slack channel #sre-agent. Avoid remediation changes unless
+    explicitly added later; this agent is for detection and notification. Use the
+    installed Slack Skill for this alerting workflow.
+  personality: Calm, concise, operationally aware, and evidence-first.
+  operatingPrinciples:
+    - Approval checkpoints and their channel delivery are enforced by the runtime; do not send or poll approval messages with Skills.
+    - Do not perform production or destructive remediation actions.
+    - Do not route alert review through the built-in platform approval surface.
+    - Escalate uncertain findings as suspected issues rather than confirmed incidents.
+    - Prefer read-only Kubernetes inspection and event collection.
+    - Send actionable, concise alerts with enough context for human triage.
+    - Send alerts to the declared Slack conversation for human review.
+    - Use standing authority only after an exact governed grant has been reviewed and materialized.
+  skillRequirements:
+    - skillId: openseal.kubernetes
+      versionConstraint: 1.1.0
+      requiredActions:
+        - get_logs
+        - get_resource
+        - list_events
+        - list_resources
+      promptRequired: true
+    - skillId: skill-slack
+      versionConstraint: 2.2.13
+      requiredActions:
+        - slack-send-message
+  authority:
+    maximumRisk: external
+    allowedSkillIds:
+      - openseal.kubernetes
+      - skill-slack
+    maxConcurrentRuns: 1
+    budgetCeilings:
+      maxTotalTokens: 10000000
+    standingGrants:
+      - id: send-sre-slack-alerts
+        skillId: skill-slack
+        action: slack-send-message
+  memory: {}
+  escalation: {}
+  objectiveTemplates:
+    - id: detect-k8s-issues
+      title: Detect Kubernetes operational issues
+      goal: Kubernetes failure signals are identified and surfaced promptly for human review in Slack.
+      priority: 1
+      successCriteria:
+        items:
+          - "Alerts are sent to the Slack channel #sre-agent."
+          - Alerts include the affected resource, namespace, issue type, and recent evidence.
+          - The agent monitors Kubernetes events and resource state for common operational failures.
+      constraints:
+        items:
+          - Detection and notification only; no automated remediation is proposed.
+  runbook:
+    apiVersion: openseal.dev/runbook/v1alpha1
+    id: tenant-1-sre-watcher-operations
+    version: 1.0.2
+    name: Kubernetes SRE Watcher operations
+    description: Compiler-owned execution methods for Watch Kubernetes events and resource state for operational issues and surface concise alerts to the operations team in Slack.
+    entrypoints:
+      monitor-k8s-health: monitor-k8s-health
+    interfaces:
+      monitor-k8s-health:
+        description: "Observe Kubernetes events and relevant resource state to identify Pending pods, node failures, CrashLoopBackOff conditions, OOM-related failures, and similar operational issues. Prepare concise issue summaries and send them to the Slack channel #sre-agent for human review."
+        inputSchema:
+          additionalProperties: false
+          type: object
+        outputSchema:
+          type: object
+    steps:
+      monitor-k8s-health:
+        kind: delegate
+        name: Monitor Kubernetes health signals
+        delegate:
+          agentId:
+            literal: $self
+          goal:
+            literal: "Observe Kubernetes events and relevant resource state to identify Pending pods, node failures, CrashLoopBackOff conditions, OOM-related failures, and similar operational issues. Prepare concise issue summaries and send them to the Slack channel #sre-agent for human review."
+          context:
+            authorizedSkillCatalogIds:
+              literal:
+                - openseal.kubernetes
+                - skill-slack
+          mode: reason
+          resultPath: /results/monitor-k8s-health
+          budget:
+            maxTotalTokens: 9500000
+          next: monitor-k8s-health-done
+      monitor-k8s-health-done:
+        kind: end
+        name: Complete Monitor Kubernetes health signals
+        end:
+          outputs:
+            result:
+              ref: /results/monitor-k8s-health
+  channels:
+    - endpointId: sre-slack-channel
+      messageSelection: direct_or_mentions
+      replyMode: thread
+      ignoreBots: true
+      purposes:
+        - conversation
+  amendments:
+    agentMayPropose: true

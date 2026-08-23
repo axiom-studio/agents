@@ -29,8 +29,9 @@ jobs:
                   continue
               kind = doc["kind"]
               meta = doc.get("metadata", {})
-              if "name" not in meta or "id" not in meta or "version" not in meta:
-                  errors.append(f"{path}: metadata must include name, id, version")
+              display_name = meta.get("displayName") or meta.get("name")
+              if not display_name or "id" not in meta or "version" not in meta:
+                  errors.append(f"{path}: metadata must include displayName (or legacy name), id, version")
           if errors:
               for e in errors:
                   print(e)
