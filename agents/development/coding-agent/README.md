@@ -6,6 +6,7 @@ The OpenSeal Coding Agent uses a persistent framework-native Workspace for repos
 
 - A model-provider Vault credential
 - A GitHub token Vault credential bound to the Workspace's `GITHUB` slot
+- `skill-github` 1.0.0 bound to the same GitHub credential for governed pull-request delivery
 - `openseal.kubernetes` 1.1.0 mapped to the target environment cluster
 - `skill-slack` 2.2.13 with a Slack bot/signing-secret Vault credential and destination channel
 - An Atlas execution host that supports native Workspace API version 14
@@ -25,6 +26,9 @@ binding is absent:
   short-lived `github_token` grant only for the explicitly listed
   `axiom-studio` repositories on `github.com`; push is an explicit policy bit
   separate from clone.
+- GitHub API actions are a separate Skill binding. Repository arguments are
+  narrowed to the same reviewed repository set, and pull-request creation is
+  classified as an external side effect.
 - Kubernetes reads and mutations use the target environment's
   `openseal.kubernetes` runtime capability. Workspace or Git authority does not
   imply cluster authority.

@@ -47,9 +47,13 @@ agent:
       - skillId: skill-slack
         versionConstraint: 2.2.13
         requiredActions: [slack-send-message]
+      - skillId: skill-github
+        versionConstraint: 1.0.0
+        requiredActions: [github-pull-request-create, github-pull-request-list, github-repository-get]
+        promptRequired: true
     authority:
       maximumRisk: production
-      allowedSkillIds: [openseal.kubernetes, skill-slack]
+      allowedSkillIds: [openseal.kubernetes, skill-github, skill-slack]
       maxConcurrentRuns: 4
       budgetCeilings:
         maxTotalTokens: 2000000
@@ -81,7 +85,7 @@ agent:
 policy:
   restrictions:
     maximumRisk: production
-    allowedSkillIds: [openseal.kubernetes, skill-slack]
+    allowedSkillIds: [openseal.kubernetes, skill-github, skill-slack]
     maxConcurrentRuns: 4
     budgetCeilings:
       maxTotalTokens: 2000000
@@ -127,6 +131,25 @@ runtime:
       id: openseal.kubernetes
       version: 1.1.0
 skills:
+  - requirementId: skill-github
+    identity:
+      id: skill-github
+      version: 1.0.0
+      sourceIdentity: https://github.com/axiom-studio/skills::skill-github
+    policy:
+      allowedActions: [github-pull-request-create, github-pull-request-list, github-repository-get]
+      enablePrompt: true
+      maximumRisk: external
+      argumentRestrictions:
+        github-pull-request-create:
+          owner: {const: axiom-studio}
+          repository: {enum: [agents, cortex, openseal, skills, studio]}
+        github-pull-request-list:
+          owner: {const: axiom-studio}
+          repository: {enum: [agents, cortex, openseal, skills, studio]}
+        github-repository-get:
+          owner: {const: axiom-studio}
+          repository: {enum: [agents, cortex, openseal, skills, studio]}
   - requirementId: skill-slack
     identity:
       id: skill-slack
@@ -147,6 +170,10 @@ credentials:
     bindingKey: MODEL_PROVIDER
     kind: vault
     requiredBy: [agent]
+  - name: skill-github.token
+    bindingKey: token
+    kind: github_token
+    requiredBy: [skill-github]
   - name: skill-slack.slack_bot_token
     bindingKey: slack_bot_token
     kind: slack_bot_token
@@ -166,4 +193,4 @@ endpoints:
       sourceIdentity: https://github.com/axiom-studio/skills::skill-slack
     adapterId: conversations
     enabled: true
-digest: sha256:054e37104e0c36f2e4d4d147fb568ce7abd412cf08cb4f4376be3798b1f6fa89
+digest: sha256:4598c9b9bd7b196a2c1f92b97e76527f8bf60393939c6858a4fb30e263f70336
