@@ -45,10 +45,18 @@ spec:
       versionConstraint: 2.2.13
       requiredActions:
         - slack-send-message
+    - skillId: skill-github
+      versionConstraint: 1.0.0
+      requiredActions:
+        - github-pull-request-create
+        - github-pull-request-list
+        - github-repository-get
+      promptRequired: true
   authority:
     maximumRisk: production
     allowedSkillIds:
       - openseal.kubernetes
+      - skill-github
       - skill-slack
     maxConcurrentRuns: 4
     budgetCeilings:
