@@ -112,6 +112,12 @@ policy:
           credentialBinding: GITHUB
           credentialKind: github_token
           allowedHosts: [github.com]
+          allowedRepositories:
+            - github.com/axiom-studio/agents
+            - github.com/axiom-studio/cortex
+            - github.com/axiom-studio/openseal
+            - github.com/axiom-studio/skills
+            - github.com/axiom-studio/studio
           maxDurationSeconds: 900
         credentialBindings: [GITHUB]
       maxConcurrency: 1
@@ -160,4 +166,4 @@ endpoints:
       sourceIdentity: https://github.com/axiom-studio/skills::skill-slack
     adapterId: conversations
     enabled: true
-digest: sha256:5b3e0f11365a3137198d2acb81e85068ab37164b81c16c40ecc752d33af1a92b
+digest: sha256:054e37104e0c36f2e4d4d147fb568ce7abd412cf08cb4f4376be3798b1f6fa89
