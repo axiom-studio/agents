@@ -2,7 +2,7 @@ apiVersion: openseal.dev/agent-bundle/v1alpha1
 kind: AgentBundle
 metadata:
   id: coding-agent
-  version: 1.0.2
+  version: 1.0.3
   displayName: OpenSeal Coding Agent
   description: Work across governed GitHub repositories in a persistent workspace and perform approved Kubernetes deployment operations.
   tags: [coding, development, git, kubernetes]
@@ -11,7 +11,7 @@ agent:
   kind: Agent
   metadata:
     id: coding-agent
-    version: 1.0.2
+    version: 1.0.3
     displayName: OpenSeal Coding Agent
     description: Work across governed GitHub repositories in a persistent workspace, run bounded development tools, and perform approved Kubernetes deployment operations.
   spec:
@@ -45,7 +45,7 @@ agent:
         requiredActions: [get_logs, get_resource, list_events, list_resources, patch_resource, restart_workload]
         promptRequired: true
       - skillId: skill-slack
-        versionConstraint: 2.2.13
+        versionConstraint: 2.2.14
         requiredActions: [slack-send-message]
       - skillId: skill-github
         versionConstraint: 1.0.1
@@ -158,7 +158,7 @@ skills:
   - requirementId: skill-slack
     identity:
       id: skill-slack
-      version: 2.2.13
+      version: 2.2.14
       sourceIdentity: https://github.com/axiom-studio/skills::skill-slack
     policy:
       allowedActions: [slack-send-message]
@@ -179,6 +179,10 @@ credentials:
     bindingKey: token
     kind: github_token
     requiredBy: [skill-github]
+  - name: skill-slack.slack_app_token
+    bindingKey: slack_app_token
+    kind: slack_app_token
+    requiredBy: [skill-slack]
   - name: skill-slack.slack_bot_token
     bindingKey: slack_bot_token
     kind: slack_bot_token
@@ -194,7 +198,7 @@ endpoints:
     mode: channel
     adapter:
       id: skill-slack
-      version: 2.2.13
+      version: 2.2.14
       sourceIdentity: https://github.com/axiom-studio/skills::skill-slack
     adapterId: conversations
     enabled: true
@@ -204,7 +208,7 @@ callbacks:
     provider: slack
     adapter:
       id: skill-slack
-      version: 2.2.13
+      version: 2.2.14
       sourceIdentity: https://github.com/axiom-studio/skills::skill-slack
     adapterId: interactions
     subscriptions:
@@ -213,4 +217,4 @@ callbacks:
         targetEndpointId: coding-slack-channel
     requiredConfiguration: [approvalPrincipals, teamId]
     enabled: true
-digest: sha256:5afe14b12496652cf742a94d6eb3d86d4c8e3b0dc1032226dd88e488842c7717
+digest: sha256:dd14a8721ae7fa124aa4e9123c4de9713b2b2795b21ceafcbee294de9c502eca
