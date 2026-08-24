@@ -1,0 +1,1 @@
+The OpenSeal Coding Agent UAT verification covers a retained native Workspace, Vault-backed private Git clone/push, governed GitHub delivery, and governed Kubernetes inspection.
