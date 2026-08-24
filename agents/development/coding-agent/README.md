@@ -29,9 +29,9 @@ binding is absent:
 - GitHub API actions are a separate Skill binding. Repository arguments are
   narrowed to the same reviewed repository set, and pull-request creation is
   classified as an external side effect.
-- Kubernetes reads and mutations use the target environment's
-  `openseal.kubernetes` runtime capability. Workspace or Git authority does not
-  imply cluster authority.
+- Kubernetes reads and mutations use an exact `openseal.kubernetes` Skill
+  binding configured for the target environment cluster. Workspace or Git
+  authority does not imply cluster authority.
 - Slack can invoke the Agent only through the mapped provider connection and
   destination. Provider credentials remain Vault references.
 - The Agent may run four conversations concurrently, while its default
