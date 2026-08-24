@@ -2,7 +2,7 @@ apiVersion: openseal.dev/agent-bundle/v1alpha1
 kind: AgentBundle
 metadata:
   id: coding-agent
-  version: 1.0.1
+  version: 1.0.2
   displayName: OpenSeal Coding Agent
   description: Work across governed GitHub repositories in a persistent workspace and perform approved Kubernetes deployment operations.
   tags: [coding, development, git, kubernetes]
@@ -11,7 +11,7 @@ agent:
   kind: Agent
   metadata:
     id: coding-agent
-    version: 1.0.1
+    version: 1.0.2
     displayName: OpenSeal Coding Agent
     description: Work across governed GitHub repositories in a persistent workspace, run bounded development tools, and perform approved Kubernetes deployment operations.
   spec:
@@ -57,6 +57,8 @@ agent:
       maxConcurrentRuns: 4
       budgetCeilings:
         maxTotalTokens: 2000000
+      approvalDestinations:
+        - endpointId: coding-slack-channel
     memory: {}
     escalation: {}
     objectiveTemplates:
@@ -79,7 +81,7 @@ agent:
         messageSelection: direct_or_mentions
         replyMode: thread
         ignoreBots: true
-        purposes: [conversation]
+        purposes: [conversation, approvals]
     amendments:
       agentMayPropose: true
 policy:
@@ -196,4 +198,19 @@ endpoints:
       sourceIdentity: https://github.com/axiom-studio/skills::skill-slack
     adapterId: conversations
     enabled: true
-digest: sha256:0d8aafe50a95212ba0081cef420c4e7bac97b90d373c1c3d5984aa19f367932f
+callbacks:
+  - id: coding-slack-approvals
+    name: Coding Agent Slack approvals
+    provider: slack
+    adapter:
+      id: skill-slack
+      version: 2.2.13
+      sourceIdentity: https://github.com/axiom-studio/skills::skill-slack
+    adapterId: interactions
+    subscriptions:
+      - eventType: approval.decided
+        consumer: approvals
+        targetEndpointId: coding-slack-channel
+    requiredConfiguration: [approvalPrincipals, teamId]
+    enabled: true
+digest: sha256:5afe14b12496652cf742a94d6eb3d86d4c8e3b0dc1032226dd88e488842c7717

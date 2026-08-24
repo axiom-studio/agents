@@ -2,7 +2,7 @@ apiVersion: openseal.dev/agent/v1alpha1
 kind: Agent
 metadata:
   id: coding-agent
-  version: 1.0.1
+  version: 1.0.2
   displayName: OpenSeal Coding Agent
   description: Work across governed GitHub repositories in a persistent workspace, run bounded development tools, and perform approved Kubernetes deployment operations.
 spec:
@@ -61,6 +61,8 @@ spec:
     maxConcurrentRuns: 4
     budgetCeilings:
       maxTotalTokens: 2000000
+    approvalDestinations:
+      - endpointId: coding-slack-channel
   memory: {}
   escalation: {}
   objectiveTemplates:
@@ -85,5 +87,6 @@ spec:
       ignoreBots: true
       purposes:
         - conversation
+        - approvals
   amendments:
     agentMayPropose: true
