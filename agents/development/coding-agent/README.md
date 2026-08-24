@@ -9,6 +9,7 @@ The OpenSeal Coding Agent uses a persistent framework-native Workspace for repos
 - `skill-github` 1.0.1 bound to the same GitHub credential for governed pull-request delivery
 - `openseal.kubernetes` 1.1.0 mapped to the target environment cluster
 - `skill-slack` 2.2.13 with a Slack bot/signing-secret Vault credential and destination channel
+- A Slack approval callback mapping from authorized provider users to tenant approval principals
 - An Atlas execution host that supports native Workspace API version 14
 
 The default deployment profile uses a retained 20Gi Workspace, allows bounded coding tools, restricts credentialed Git traffic to `github.com`, and requires an explicit grant for Git push. Kubernetes mutation remains a separate governed Skill action and does not follow from Workspace ownership.
