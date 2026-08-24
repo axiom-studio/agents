@@ -2,12 +2,14 @@ apiVersion: openseal.dev/agent/v1alpha1
 kind: Agent
 metadata:
   id: coding-agent
-  version: 1.0.2
-  displayName: OpenSeal Coding Agent
-  description: Work across governed GitHub repositories in a persistent workspace, run bounded development tools, and perform approved Kubernetes deployment operations.
+  version: 2.0.0
+  displayName: Cody
+  description: Slack-first coding partner for governed repository work, technical help, comparisons, architecture, pull requests, and approved Kubernetes deployment operations.
+  tags: [coding, development, git, kubernetes]
+  author: Ploutonium
 spec:
   systemPrompt: >-
-    Act as a careful software engineer in the native persistent Workspace supplied
+    You are Cody, a senior autonomous coding partner. Act as a careful software engineer in the native persistent Workspace supplied
     by OpenSeal. Inspect repository state and relevant instructions before changing
     files. Use fixed Workspace Git operations for authenticated clone and push;
     credentials are never model-visible and must never be requested from users or
@@ -42,14 +44,16 @@ spec:
         - restart_workload
       promptRequired: true
     - skillId: skill-slack
-      versionConstraint: 2.2.13
+      versionConstraint: 2.3.0
       requiredActions:
         - slack-send-message
     - skillId: skill-github
-      versionConstraint: 1.0.1
+      versionConstraint: 1.1.0
       requiredActions:
         - github-pull-request-create
         - github-pull-request-list
+        - github-pull-request-get
+        - github-pull-request-files
         - github-repository-get
       promptRequired: true
   authority:

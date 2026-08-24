@@ -2,21 +2,24 @@ apiVersion: openseal.dev/agent-bundle/v1alpha1
 kind: AgentBundle
 metadata:
   id: coding-agent
-  version: 1.0.3
-  displayName: OpenSeal Coding Agent
+  version: 2.0.0
+  displayName: Cody
   description: Work across governed GitHub repositories in a persistent workspace and perform approved Kubernetes deployment operations.
   tags: [coding, development, git, kubernetes]
+  author: Ploutonium
 agent:
   apiVersion: openseal.dev/agent/v1alpha1
   kind: Agent
   metadata:
     id: coding-agent
-    version: 1.0.3
-    displayName: OpenSeal Coding Agent
-    description: Work across governed GitHub repositories in a persistent workspace, run bounded development tools, and perform approved Kubernetes deployment operations.
+    version: 2.0.0
+    displayName: Cody
+    description: Slack-first coding partner for governed repository work, technical help, comparisons, architecture, pull requests, and approved Kubernetes deployment operations.
+    tags: [coding, development, git, kubernetes]
+    author: Ploutonium
   spec:
     systemPrompt: >-
-      Act as a careful software engineer in the native persistent Workspace supplied
+      You are Cody, a senior autonomous coding partner. Act as a careful software engineer in the native persistent Workspace supplied
       by OpenSeal. Inspect repository state and relevant instructions before changing
       files. Use fixed Workspace Git operations for authenticated clone and push;
       credentials are never model-visible and must never be requested from users or
@@ -45,11 +48,11 @@ agent:
         requiredActions: [get_logs, get_resource, list_events, list_resources, patch_resource, restart_workload]
         promptRequired: true
       - skillId: skill-slack
-        versionConstraint: 2.2.14
+        versionConstraint: 2.3.0
         requiredActions: [slack-send-message]
       - skillId: skill-github
-        versionConstraint: 1.0.1
-        requiredActions: [github-pull-request-create, github-pull-request-list, github-repository-get]
+        versionConstraint: 1.1.0
+        requiredActions: [github-pull-request-create, github-pull-request-list, github-pull-request-get, github-pull-request-files, github-repository-get]
         promptRequired: true
     authority:
       maximumRisk: production
@@ -111,7 +114,7 @@ policy:
           enabled: true
           network: denied
           maxDurationSeconds: 900
-          allowedExecutables: [bun, bunx, git, rg]
+          allowedExecutables: [bun, bunx, git, go, gofmt, make, node, npm, npx, pnpm, rg, yarn]
         git:
           enabled: true
           pushEnabled: true
@@ -139,10 +142,10 @@ skills:
   - requirementId: skill-github
     identity:
       id: skill-github
-      version: 1.0.1
+      version: 1.1.0
       sourceIdentity: https://github.com/axiom-studio/skills::skill-github
     policy:
-      allowedActions: [github-pull-request-create, github-pull-request-list, github-repository-get]
+      allowedActions: [github-pull-request-create, github-pull-request-list, github-pull-request-get, github-pull-request-files, github-repository-get]
       enablePrompt: true
       maximumRisk: external
       argumentRestrictions:
@@ -152,13 +155,19 @@ skills:
         github-pull-request-list:
           owner: {const: axiom-studio}
           repository: {enum: [agents, cortex, openseal, skills, studio]}
+        github-pull-request-get:
+          owner: {const: axiom-studio}
+          repository: {enum: [agents, cortex, openseal, skills, studio]}
+        github-pull-request-files:
+          owner: {const: axiom-studio}
+          repository: {enum: [agents, cortex, openseal, skills, studio]}
         github-repository-get:
           owner: {const: axiom-studio}
           repository: {enum: [agents, cortex, openseal, skills, studio]}
   - requirementId: skill-slack
     identity:
       id: skill-slack
-      version: 2.2.14
+      version: 2.3.0
       sourceIdentity: https://github.com/axiom-studio/skills::skill-slack
     policy:
       allowedActions: [slack-send-message]
@@ -198,7 +207,7 @@ endpoints:
     mode: channel
     adapter:
       id: skill-slack
-      version: 2.2.14
+      version: 2.3.0
       sourceIdentity: https://github.com/axiom-studio/skills::skill-slack
     adapterId: conversations
     enabled: true
@@ -208,7 +217,7 @@ callbacks:
     provider: slack
     adapter:
       id: skill-slack
-      version: 2.2.14
+      version: 2.3.0
       sourceIdentity: https://github.com/axiom-studio/skills::skill-slack
     adapterId: interactions
     subscriptions:
@@ -217,4 +226,4 @@ callbacks:
         targetEndpointId: coding-slack-channel
     requiredConfiguration: [approvalPrincipals, teamId]
     enabled: true
-digest: sha256:dd14a8721ae7fa124aa4e9123c4de9713b2b2795b21ceafcbee294de9c502eca
+digest: sha256:95eba7d9b3618a7de495c986f985ef21b66fda0fccbafbd70b9f3f140bfa9291
