@@ -125,12 +125,15 @@ policy:
           maxDurationSeconds: 900
         credentialBindings: [GITHUB]
       maxConcurrency: 1
-runtime:
+skills:
   - requirementId: openseal.kubernetes
     identity:
       id: openseal.kubernetes
       version: 1.1.0
-skills:
+    policy:
+      allowedActions: [get_logs, get_resource, list_events, list_resources, patch_resource, restart_workload]
+      enablePrompt: true
+      maximumRisk: production
   - requirementId: skill-github
     identity:
       id: skill-github
@@ -193,4 +196,4 @@ endpoints:
       sourceIdentity: https://github.com/axiom-studio/skills::skill-slack
     adapterId: conversations
     enabled: true
-digest: sha256:4598c9b9bd7b196a2c1f92b97e76527f8bf60393939c6858a4fb30e263f70336
+digest: sha256:f9ffa2fc223f2860859a18a1d63f89d0363858fcd751611d0aff67c30ef8e5a5
