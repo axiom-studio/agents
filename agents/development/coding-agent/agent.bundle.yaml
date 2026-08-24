@@ -2,7 +2,7 @@ apiVersion: openseal.dev/agent-bundle/v1alpha1
 kind: AgentBundle
 metadata:
   id: coding-agent
-  version: 1.0.0
+  version: 1.0.1
   displayName: OpenSeal Coding Agent
   description: Work across governed GitHub repositories in a persistent workspace and perform approved Kubernetes deployment operations.
   tags: [coding, development, git, kubernetes]
@@ -11,7 +11,7 @@ agent:
   kind: Agent
   metadata:
     id: coding-agent
-    version: 1.0.0
+    version: 1.0.1
     displayName: OpenSeal Coding Agent
     description: Work across governed GitHub repositories in a persistent workspace, run bounded development tools, and perform approved Kubernetes deployment operations.
   spec:
@@ -48,7 +48,7 @@ agent:
         versionConstraint: 2.2.13
         requiredActions: [slack-send-message]
       - skillId: skill-github
-        versionConstraint: 1.0.0
+        versionConstraint: 1.0.1
         requiredActions: [github-pull-request-create, github-pull-request-list, github-repository-get]
         promptRequired: true
     authority:
@@ -137,7 +137,7 @@ skills:
   - requirementId: skill-github
     identity:
       id: skill-github
-      version: 1.0.0
+      version: 1.0.1
       sourceIdentity: https://github.com/axiom-studio/skills::skill-github
     policy:
       allowedActions: [github-pull-request-create, github-pull-request-list, github-repository-get]
@@ -196,4 +196,4 @@ endpoints:
       sourceIdentity: https://github.com/axiom-studio/skills::skill-slack
     adapterId: conversations
     enabled: true
-digest: sha256:f9ffa2fc223f2860859a18a1d63f89d0363858fcd751611d0aff67c30ef8e5a5
+digest: sha256:0d8aafe50a95212ba0081cef420c4e7bac97b90d373c1c3d5984aa19f367932f

@@ -2,7 +2,7 @@ apiVersion: openseal.dev/agent/v1alpha1
 kind: Agent
 metadata:
   id: coding-agent
-  version: 1.0.0
+  version: 1.0.1
   displayName: OpenSeal Coding Agent
   description: Work across governed GitHub repositories in a persistent workspace, run bounded development tools, and perform approved Kubernetes deployment operations.
 spec:
@@ -46,7 +46,7 @@ spec:
       requiredActions:
         - slack-send-message
     - skillId: skill-github
-      versionConstraint: 1.0.0
+      versionConstraint: 1.0.1
       requiredActions:
         - github-pull-request-create
         - github-pull-request-list
