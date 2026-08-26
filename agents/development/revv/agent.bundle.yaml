@@ -2,7 +2,7 @@ apiVersion: openseal.dev/agent-bundle/v1alpha1
 kind: AgentBundle
 metadata:
   id: revv
-  version: 1.0.0
+  version: 1.0.1
   displayName: Revv
   description: Event-driven GitHub pull request reviewer that posts exact reviews and concise Slack summaries.
   tags: [code-review, github, pull-requests, slack]
@@ -12,7 +12,7 @@ agent:
   kind: Agent
   metadata:
     id: revv
-    version: 1.0.0
+    version: 1.0.1
     displayName: Revv
     description: Event-driven GitHub pull request reviewer that posts exact reviews and concise Slack summaries.
     tags: [code-review, github, pull-requests, slack]
@@ -37,7 +37,7 @@ agent:
       - Post the same factual decision summary to the configured Slack destination.
     skillRequirements:
       - skillId: skill-github
-        versionConstraint: 1.1.0
+        versionConstraint: 1.2.0
         requiredActions: [github-pull-request-get, github-pull-request-files, github-pull-request-review-create]
         promptRequired: true
       - skillId: skill-slack
@@ -119,7 +119,7 @@ skills:
   - requirementId: skill-github
     identity:
       id: skill-github
-      version: 1.1.0
+      version: 1.2.0
       sourceIdentity: https://github.com/axiom-studio/skills::skill-github
     policy:
       allowedActions: [github-pull-request-get, github-pull-request-files, github-pull-request-review-create]
@@ -168,7 +168,7 @@ callbacks:
   - id: revv-github-prs
     name: Revv GitHub pull requests
     provider: github
-    adapter: {id: skill-github, version: 1.1.0, sourceIdentity: 'https://github.com/axiom-studio/skills::skill-github'}
+    adapter: {id: skill-github, version: 1.2.0, sourceIdentity: 'https://github.com/axiom-studio/skills::skill-github'}
     adapterId: pull-requests
     subscriptions:
       - {eventType: github.pull_request.opened, consumer: runbooks}
@@ -177,4 +177,4 @@ callbacks:
       - {eventType: github.pull_request.synchronize, consumer: runbooks}
     requiredConfiguration: [owner, repository]
     enabled: true
-digest: sha256:6745ca5cdfe8eebe51d7a613cd4088de2144ee2f543a92cb86119323cafcb189
+digest: sha256:763eaf626df846665ba23b6357c8f03d716b87aba1ce6adef1c5adaf54c8699d

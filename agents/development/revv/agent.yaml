@@ -2,7 +2,7 @@ apiVersion: openseal.dev/agent/v1alpha1
 kind: Agent
 metadata:
   id: revv
-  version: 1.0.0
+  version: 1.0.1
   displayName: Revv
   description: Event-driven GitHub pull request reviewer that posts exact reviews and concise Slack summaries.
   tags: [code-review, github, pull-requests, slack]
@@ -29,7 +29,7 @@ spec:
     - Post the same factual decision summary to the configured Slack destination.
   skillRequirements:
     - skillId: skill-github
-      versionConstraint: 1.1.0
+      versionConstraint: 1.2.0
       requiredActions: [github-pull-request-get, github-pull-request-files, github-pull-request-review-create]
       promptRequired: true
     - skillId: skill-slack
