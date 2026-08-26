@@ -2,7 +2,7 @@ apiVersion: openseal.dev/agent-bundle/v1alpha1
 kind: AgentBundle
 metadata:
   id: revv
-  version: 1.0.1
+  version: 1.0.2
   displayName: Revv
   description: Event-driven GitHub pull request reviewer that posts exact reviews and concise Slack summaries.
   tags: [code-review, github, pull-requests, slack]
@@ -12,7 +12,7 @@ agent:
   kind: Agent
   metadata:
     id: revv
-    version: 1.0.1
+    version: 1.0.2
     displayName: Revv
     description: Event-driven GitHub pull request reviewer that posts exact reviews and concise Slack summaries.
     tags: [code-review, github, pull-requests, slack]
@@ -37,11 +37,11 @@ agent:
       - Post the same factual decision summary to the configured Slack destination.
     skillRequirements:
       - skillId: skill-github
-        versionConstraint: 1.2.0
+        versionConstraint: 1.2.1
         requiredActions: [github-pull-request-get, github-pull-request-files, github-pull-request-review-create]
         promptRequired: true
       - skillId: skill-slack
-        versionConstraint: 2.3.0
+        versionConstraint: 2.3.1
         requiredActions: [slack-send-message]
         promptRequired: true
     authority:
@@ -119,7 +119,7 @@ skills:
   - requirementId: skill-github
     identity:
       id: skill-github
-      version: 1.2.0
+      version: 1.2.1
       sourceIdentity: https://github.com/axiom-studio/skills::skill-github
     policy:
       allowedActions: [github-pull-request-get, github-pull-request-files, github-pull-request-review-create]
@@ -132,7 +132,7 @@ skills:
   - requirementId: skill-slack
     identity:
       id: skill-slack
-      version: 2.3.0
+      version: 2.3.1
       sourceIdentity: https://github.com/axiom-studio/skills::skill-slack
     policy:
       allowedActions: [slack-send-message]
@@ -152,14 +152,14 @@ endpoints:
     name: Revv Slack channel
     provider: slack
     mode: channel
-    adapter: {id: skill-slack, version: 2.3.0, sourceIdentity: 'https://github.com/axiom-studio/skills::skill-slack'}
+    adapter: {id: skill-slack, version: 2.3.1, sourceIdentity: 'https://github.com/axiom-studio/skills::skill-slack'}
     adapterId: conversations
     enabled: true
 callbacks:
   - id: revv-slack-approvals
     name: Revv Slack approvals
     provider: slack
-    adapter: {id: skill-slack, version: 2.3.0, sourceIdentity: 'https://github.com/axiom-studio/skills::skill-slack'}
+    adapter: {id: skill-slack, version: 2.3.1, sourceIdentity: 'https://github.com/axiom-studio/skills::skill-slack'}
     adapterId: interactions
     subscriptions:
       - {eventType: approval.decided, consumer: approvals, targetEndpointId: revv-slack-channel}
@@ -168,7 +168,7 @@ callbacks:
   - id: revv-github-prs
     name: Revv GitHub pull requests
     provider: github
-    adapter: {id: skill-github, version: 1.2.0, sourceIdentity: 'https://github.com/axiom-studio/skills::skill-github'}
+    adapter: {id: skill-github, version: 1.2.1, sourceIdentity: 'https://github.com/axiom-studio/skills::skill-github'}
     adapterId: pull-requests
     subscriptions:
       - {eventType: github.pull_request.opened, consumer: runbooks}
@@ -177,4 +177,4 @@ callbacks:
       - {eventType: github.pull_request.synchronize, consumer: runbooks}
     requiredConfiguration: [owner, repository]
     enabled: true
-digest: sha256:763eaf626df846665ba23b6357c8f03d716b87aba1ce6adef1c5adaf54c8699d
+digest: sha256:21a75bb201eb4b76541175c9a05e4d1069f05e97024a1d0dcec6722e380f67ea
