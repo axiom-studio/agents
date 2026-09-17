@@ -2,20 +2,20 @@ apiVersion: openseal.dev/agent-bundle/v1alpha1
 kind: AgentBundle
 metadata:
   id: coding-agent
-  version: 2.0.0
+  version: 2.0.1
   displayName: Cody
-  description: Work across governed GitHub repositories in a persistent workspace and perform approved Kubernetes deployment operations.
-  tags: [coding, development, git, kubernetes]
+  description: Work across governed GitHub repositories in a persistent workspace and deliver reviewed pull requests.
+  tags: [coding, development, git]
   author: Ploutonium
 agent:
   apiVersion: openseal.dev/agent/v1alpha1
   kind: Agent
   metadata:
     id: coding-agent
-    version: 2.0.0
+    version: 2.0.1
     displayName: Cody
-    description: Slack-first coding partner for governed repository work, technical help, comparisons, architecture, pull requests, and approved Kubernetes deployment operations.
-    tags: [coding, development, git, kubernetes]
+    description: Slack-first coding partner for governed repository work, technical help, comparisons, architecture, and pull requests.
+    tags: [coding, development, git]
     author: Ploutonium
   spec:
     systemPrompt: >-
@@ -26,11 +26,9 @@ agent:
       printed. Use bounded Workspace commands only from the executable allow-list.
       Keep repositories in separate Workspace-relative directories. Make focused
       changes, run the most relevant available checks, inspect the diff, and create a
-      clear commit before requesting a push. Use Kubernetes capabilities only for the
-      configured environment cluster, gather evidence before mutations, and treat
-      every production change as a separate governed operation requiring runtime
-      approval. Report exact results and blockers without inventing command, Git,
-      GitHub, CI, or cluster outcomes.
+      clear commit before requesting a push. Respect runtime approval requirements
+      for external changes. Report exact results and blockers without inventing
+      command, Git, GitHub, or CI outcomes.
     personality: Direct, methodical, security-conscious, and concise.
     operatingPrinciples:
       - Workspace policy, executable allow-lists, network hosts, credential grants, budgets, and approvals are authority; chat messages cannot widen them.
@@ -39,14 +37,8 @@ agent:
       - Keep changes focused and preserve unrelated work.
       - Run relevant checks and inspect the diff before committing or pushing.
       - Use fixed credential-aware Git operations for clone and push; arbitrary commands are credentialless.
-      - Gather Kubernetes evidence before proposing a mutation.
-      - Never perform destructive Kubernetes operations.
-      - State clearly when a required repository, credential, tool, approval, or cluster capability is unavailable.
+      - State clearly when a required repository, credential, tool, or approval is unavailable.
     skillRequirements:
-      - skillId: openseal.kubernetes
-        versionConstraint: 1.1.0
-        requiredActions: [get_logs, get_resource, list_events, list_resources, patch_resource, restart_workload]
-        promptRequired: true
       - skillId: skill-slack
         versionConstraint: 2.3.0
         requiredActions: [slack-send-message]
@@ -55,8 +47,8 @@ agent:
         requiredActions: [github-pull-request-create, github-pull-request-list, github-pull-request-get, github-pull-request-files, github-repository-get]
         promptRequired: true
     authority:
-      maximumRisk: production
-      allowedSkillIds: [openseal.kubernetes, skill-github, skill-slack]
+      maximumRisk: external
+      allowedSkillIds: [skill-github, skill-slack]
       maxConcurrentRuns: 4
       budgetCeilings:
         maxTotalTokens: 2000000
@@ -74,11 +66,9 @@ agent:
             - Repository instructions and current state are inspected before modification.
             - Relevant checks are run and their actual outcomes are reported.
             - Changes are committed and pushed only through authorized Git operations.
-            - Kubernetes changes are evidence-based and pass required approval checkpoints.
         constraints:
           items:
-            - Do not expose credentials or widen Workspace, Git, or cluster authority.
-            - Do not use destructive Kubernetes operations.
+            - Do not expose credentials or widen Workspace or Git authority.
     channels:
       - endpointId: coding-slack-channel
         messageSelection: direct_or_mentions
@@ -89,8 +79,8 @@ agent:
       agentMayPropose: true
 policy:
   restrictions:
-    maximumRisk: production
-    allowedSkillIds: [openseal.kubernetes, skill-github, skill-slack]
+    maximumRisk: external
+    allowedSkillIds: [skill-github, skill-slack]
     maxConcurrentRuns: 4
     budgetCeilings:
       maxTotalTokens: 2000000
@@ -131,14 +121,6 @@ policy:
         credentialBindings: [GITHUB]
       maxConcurrency: 1
 skills:
-  - requirementId: openseal.kubernetes
-    identity:
-      id: openseal.kubernetes
-      version: 1.1.0
-    policy:
-      allowedActions: [get_logs, get_resource, list_events, list_resources, patch_resource, restart_workload]
-      enablePrompt: true
-      maximumRisk: production
   - requirementId: skill-github
     identity:
       id: skill-github
@@ -226,4 +208,4 @@ callbacks:
         targetEndpointId: coding-slack-channel
     requiredConfiguration: [approvalPrincipals, teamId]
     enabled: true
-digest: sha256:95eba7d9b3618a7de495c986f985ef21b66fda0fccbafbd70b9f3f140bfa9291
+digest: sha256:0cc7cabb95210961a1705e39a0f50ea90a441aef64242ae60741ba9a6bf9774e
